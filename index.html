@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Projects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .project-card h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .project-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .project-features {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .project-features li {
+            color: #555;
+            margin-bottom: 5px;
+            margin-left: 20px;
+        }
+
+        .project-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .project-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 My Web Projects</h1>
+            <p class="subtitle">Collection of web applications built with HTML, CSS & JavaScript</p>
+        </div>
+
+        <div class="projects">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <span class="project-icon">📱</span>
+                <h2>Instagram Phone Finder</h2>
+                <p>Find phone numbers linked to Instagram accounts. Search for usernames and retrieve associated contact information.</p>
+                <div class="project-features">
+                    <ul>
+                        <li>✅ Username search</li>
+                        <li>✅ Phone number retrieval</li>
+                        <li>✅ Copy to clipboard</li>
+                        <li>✅ Responsive design</li>
+                    </ul>
+                </div>
+                <a href="./index.html" class="project-link">Open Project →</a>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <span class="project-icon">✅</span>
+                <h2>To-Do List App</h2>
+                <p>A powerful task management application with local storage. Add, complete, and organize your daily tasks efficiently.</p>
+                <div class="project-features">
+                    <ul>
+                        <li>✅ Add & delete tasks</li>
+                        <li>✅ Mark as completed</li>
+                        <li>✅ Local storage</li>
+                        <li>✅ Task filters</li>
+                    </ul>
+                </div>
+                <a href="./todo.html" class="project-link">Open Project →</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💻 Created by aadivkamboj0606-collab | Hosted on GitHub Pages</p>
+        </div>
+    </div>
+</body>
+</html>
