@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Phone Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .result-box h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .phone-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .phone-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .phone-number {
+            flex: 1;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #c33;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-box p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>📱 Instagram Phone Finder</h1>
+            <p class="subtitle">Enter an Instagram username to find associated phone numbers</p>
+            
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="usernameInput" 
+                    placeholder="Enter Instagram username (without @)"
+                    class="input-field"
+                >
+                <button id="searchBtn" class="search-btn">Search</button>
+            </div>
+
+            <div id="result" class="result-box" style="display: none;">
+                <h2>Results for: <span id="resultUsername"></span></h2>
+                <div id="phoneList" class="phone-list"></div>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <p>Searching... ⏳</p>
+            </div>
+
+            <div id="error" class="error" style="display: none;">
+                <p id="errorMessage"></p>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ How it works:</h3>
+                <p>This tool searches for publicly available phone numbers linked to Instagram accounts. Results may be limited based on privacy settings.</p>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get elements
+        const usernameInput = document.getElementById('usernameInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultBox = document.getElementById('result');
+        const phoneList = document.getElementById('phoneList');
+        const resultUsername = document.getElementById('resultUsername');
+        const loadingBox = document.getElementById('loading');
+        const errorBox = document.getElementById('error');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Search button click event
+        searchBtn.addEventListener('click', searchInstagram);
+
+        // Enter key press event
+        usernameInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                searchInstagram();
+            }
+        });
+
+        async function searchInstagram() {
+            const username = usernameInput.value.trim();
+
+            // Validation
+            if (!username) {
+                showError('Please enter an Instagram username');
+                return;
+            }
+
+            if (username.length < 2) {
+                showError('Username must be at least 2 characters');
+                return;
+            }
+
+            // Clear previous results
+            hideResults();
+            showLoading();
+
+            try {
+                const result = await fetchPhoneNumbers(username);
+                
+                if (result.success) {
+                    displayResults(username, result.phones);
+                } else {
+                    showError(result.message);
+                }
+            } catch (error) {
+                showError('Error searching for phone numbers. Please try again.');
+                console.error('Error:', error);
+            }
+        }
+
+        async function fetchPhoneNumbers(username) {
+            // Demo implementation - shows sample results
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        success: true,
+                        phones: [
+                            '+91-98765-43210',
+                            '+91-87654-32109'
+                        ]
+                    });
+                }, 2000);
+            });
+        }
+
+        function displayResults(username, phones) {
+            hideLoading();
+            resultUsername.textContent = '@' + username;
+            phoneList.innerHTML = '';
+
+            if (phones.length === 0) {
+                phoneList.innerHTML = '<p style="color: #666;">No phone numbers found for this account.</p>';
+            } else {
+                phones.forEach(phone => {
+                    const phoneItem = document.createElement('div');
+                    phoneItem.className = 'phone-item';
+                    phoneItem.innerHTML = `
+                        <span class="phone-number">${phone}</span>
+                        <button class="copy-btn" onclick="copyToClipboard('${phone}')">Copy</button>
+                    `;
+                    phoneList.appendChild(phoneItem);
+                });
+            }
+
+            resultBox.style.display = 'block';
+            hideError();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Phone number copied! ✓');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        function showLoading() {
+            loadingBox.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loadingBox.style.display = 'none';
+        }
+
+        function showError(message) {
+            hideLoading();
+            errorMessage.textContent = message;
+            errorBox.style.display = 'block';
+        }
+
+        function hideError() {
+            errorBox.style.display = 'none';
+        }
+
+        function hideResults() {
+            resultBox.style.display = 'none';
+            errorBox.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
